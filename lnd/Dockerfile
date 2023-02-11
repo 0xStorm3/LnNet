@@ -1,46 +1,33 @@
 ARG OS=ubuntu
 ARG OS_VER=rolling
-ARG GO_VER=bullseye
+
 # Define base images with ARG versions
 FROM ${OS}:${OS_VER} as os
-FROM golang:${GO_VER} as go
-
-# OS image with command-line utilities
-FROM os AS os-base
 
 # Install dependencies
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -qq && apt-get install -yqq \
 		curl unzip jq bash-completion
 
-# Go image for building LND
-FROM go as lnd-build
+# OS image with command-line utilities
+FROM os AS lnd-install
 
-ENV GO_VER=${GO_VER}
-ENV GOPATH=/go
-
-# Build LND
+# Install LND
 ARG LND_VER=v0.15.5-beta
 ENV LND_VER=${LND_VER}
-RUN	mkdir -p ${GOPATH}/src && \
-	cd ${GOPATH}/src && \
-	go env -w GO111MODULE=off && \
-	go get -v -d github.com/lightningnetwork/lnd && \
-	cd ${GOPATH}/src/github.com/lightningnetwork/lnd && \
-	git checkout tags/${LND_VER} && \
-	make clean && make && make install
 
-# Runtime image for running LND
-FROM os-base as lnd-run
+RUN cd /tmp && \
+	curl -# -sLO https://github.com/lightningnetwork/lnd/releases/download/v0.15.5-beta/lnd-linux-amd64-${LND_VER}.tar.gz
 
-# Copy only the executables
-COPY --from=lnd-build /go/bin /go/bin
+RUN tar -xvf /tmp/lnd-linux-amd64-${LND_VER}.tar.gz -C / && \
+	cd lnd-linux-amd64-${LND_VER} && \
+	install -vD * /usr/bin && \
+	cd /tmp && \
+	rm lnd-linux-amd64-${LND_VER}.tar.gz && \
+	rm -rf lnd-linux-amd64-${LND_VER}
 
 ADD https://raw.githubusercontent.com/lightningnetwork/lnd/master/contrib/lncli.bash-completion \
 	   /usr/share/bash-completion/completions/lncli
-
-ENV GOPATH /go
-ENV PATH $PATH:$GOPATH/bin
 
 COPY lnd /lnd
 RUN ln -s /lnd /root/.lnd
