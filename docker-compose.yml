@@ -38,16 +38,16 @@ services:
       - "9735"
     # restart: always
 
-  # Chan:
-  #   container_name: Chan
-  #   build:
-  #       context: eclair
-  #   image: lnbook/eclair:latest
-  #   networks:
-  #     - lnnet
-  #   expose:
-  #     - "9735"
-  #   restart: always
+  Chan:
+    container_name: Chan
+    # build:
+    #     context: eclair
+    image: stormwine/eclair:0.8.0-0077471
+    networks:
+      - lnnet
+    expose:
+      - "9735"
+    # restart: always
 
   Dina:
     container_name: Dina

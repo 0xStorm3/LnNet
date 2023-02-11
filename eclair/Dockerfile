@@ -1,11 +1,11 @@
 ARG OS=ubuntu
-ARG OS_VER=focal
+ARG OS_VER=rolling
 FROM ${OS}:${OS_VER} as os-base
 
 # Install dependencies
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update -qq && apt-get install -yqq \
-		curl unzip jq bash-completion
+		curl unzip jq bash-completion gpg
 
 # Install default Java Runtime Environment
 RUN DEBIAN_FRONTEND=noninteractive \
@@ -17,8 +17,9 @@ RUN DEBIAN_FRONTEND=noninteractive \
 # Install eclair
 WORKDIR /usr/src
 
-ARG ECLAIR_VER=0.4.2
-ARG ECLAIR_COMMIT=52444b0
+ARG ECLAIR_VER=0.8.0
+ARG ECLAIR_COMMIT=0077471
+
 RUN cd /usr/src && \
 	curl -# -sLO https://github.com/ACINQ/eclair/releases/download/v${ECLAIR_VER}/eclair-node-${ECLAIR_VER}-${ECLAIR_COMMIT}-bin.zip && \
 	unzip eclair-node-${ECLAIR_VER}-${ECLAIR_COMMIT}-bin.zip && \
