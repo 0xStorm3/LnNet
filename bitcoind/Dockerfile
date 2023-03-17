@@ -9,8 +9,8 @@ RUN DEBIAN_FRONTEND=noninteractive \
 
 FROM os-base as bitcoind-install
 
-ARG BITCOIND_VER=24.0.1
 # Install Bitcoin Core binaries and libraries
+ARG BITCOIND_VER = 24.0.1
 RUN cd /tmp && \
 	curl -# -sLO https://bitcoincore.org/bin/bitcoin-core-${BITCOIND_VER}/bitcoin-${BITCOIND_VER}-x86_64-linux-gnu.tar.gz && \
 	tar -zxf bitcoin-${BITCOIND_VER}-x86_64-linux-gnu.tar.gz && \
@@ -21,21 +21,11 @@ RUN cd /tmp && \
 	rm bitcoin-${BITCOIND_VER}-x86_64-linux-gnu.tar.gz && \
 	rm -rf bitcoin-${BITCOIND_VER}
 
-# Install runtime scripts, bash-completion and configuration files
-
-# bash completion for bitcoind and bitcoin-cli
-# ENV GH_URL https://raw.githubusercontent.com/bitcoin/bitcoin/master/
-# ENV GH_URL https://github.com/bitcoin/bitcoin/tree/master/contrib/completions/bash
-ENV BC /usr/share/bash-completion/completions/
-ADD https://raw.githubusercontent.com/bitcoin/bitcoin/master/contrib/completions/bash/bitcoin-cli.bash-completion $BC/bitcoin-cli
-ADD https://raw.githubusercontent.com/bitcoin/bitcoin/master/contrib/completions/bash/bitcoind.bash-completion $BC/bitcoind
-ADD https://raw.githubusercontent.com/bitcoin/bitcoin/master/contrib/completions/bash/bitcoin-tx.bash-completion $BC/bitcoin-tx
-
 # Copy bitcoind configuration directory
 COPY bitcoind /bitcoind
 RUN ln -s /bitcoind /root/.
 
-# Copy support scripts
+# # Copy support scripts
 COPY bashrc /root/.bashrc
 COPY bitcoind-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/bitcoind-entrypoint.sh
