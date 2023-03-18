@@ -5,8 +5,8 @@ networks:
 services:
   bitcoind:
     container_name: bitcoind
-    build:
-        context: bitcoind
+    # build:
+    #     context: bitcoind
     image: bitcoind:24.0.1
     networks:
       - lnnet
@@ -18,8 +18,8 @@ services:
 
   Alice:
     container_name: Alice
-    build:
-        context: lnd
+    # build:
+    #     context: lnd
     image: lnd:0.15.5-beta
     networks:
       - lnnet
@@ -27,16 +27,16 @@ services:
       - "9735"
     # restart: always
 
-  # Bob:
-  #   container_name: Bob
-  #   # build:
-  #   #   context: c-lightning
-  #   image: stormwine/clighting:22.11.1
-  #   networks:
-  #     - lnnet
-  #   expose:
-  #     - "9735"
-  #   # restart: always
+  Bob:
+    container_name: Bob
+    # build:
+    #   context: c-lightning
+    image: lnd:0.15.5-beta
+    networks:
+      - lnnet
+    expose:
+      - "9735"
+    # restart: always
 
   # Chan:
   #   container_name: Chan
