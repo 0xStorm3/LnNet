@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 FROM os-base as bitcoind-install
 
 # Install Bitcoin Core binaries and libraries
-ARG BITCOIND_VER = 24.0.1
+ARG BITCOIND_VER=24.0.1
 RUN cd /tmp && \
 	curl -# -sLO https://bitcoincore.org/bin/bitcoin-core-${BITCOIND_VER}/bitcoin-${BITCOIND_VER}-x86_64-linux-gnu.tar.gz && \
 	tar -zxf bitcoin-${BITCOIND_VER}-x86_64-linux-gnu.tar.gz && \
@@ -26,13 +26,13 @@ COPY bitcoind /bitcoind
 RUN ln -s /bitcoind /root/.
 
 # # Copy support scripts
-COPY bashrc /root/.bashrc
+# COPY bashrc /root/.bashrc
 COPY bitcoind-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/bitcoind-entrypoint.sh
-COPY mine.sh /usr/local/bin
-RUN chmod +x /usr/local/bin/mine.sh
-COPY cli /usr/local/bin
-RUN chmod +x /usr/local/bin/cli
+# COPY mine.sh /usr/local/bin
+# RUN chmod +x /usr/local/bin/mine.sh
+# COPY cli /usr/local/bin
+# RUN chmod +x /usr/local/bin/cli
 
 # bitcoind P2P
 EXPOSE 18444/tcp
@@ -47,4 +47,4 @@ WORKDIR /bitcoind
 ENTRYPOINT ["/usr/local/bin/bitcoind-entrypoint.sh"]
 
 # Mine new block every 10 seconds
-CMD ["/usr/local/bin/mine.sh"]
+# CMD ["/usr/local/bin/mine.sh"]
