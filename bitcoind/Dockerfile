@@ -25,14 +25,8 @@ RUN cd /tmp && \
 COPY bitcoind /bitcoind
 RUN ln -s /bitcoind /root/.
 
-# # Copy support scripts
-# COPY bashrc /root/.bashrc
 COPY bitcoind-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/bitcoind-entrypoint.sh
-# COPY mine.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/mine.sh
-# COPY cli /usr/local/bin
-# RUN chmod +x /usr/local/bin/cli
 
 # bitcoind P2P
 EXPOSE 18444/tcp
@@ -45,6 +39,3 @@ EXPOSE 12006/tcp
 
 WORKDIR /bitcoind
 ENTRYPOINT ["/usr/local/bin/bitcoind-entrypoint.sh"]
-
-# Mine new block every 10 seconds
-# CMD ["/usr/local/bin/mine.sh"]

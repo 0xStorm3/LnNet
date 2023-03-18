@@ -17,18 +17,6 @@ echo
 echo "bitcoind started"
 
 
-# Load private key into wallet
-# export address=`cat /bitcoind/keys/demo_address.txt`
-# export privkey=`cat /bitcoind/keys/demo_privkey.txt`
-
-# If restarting the wallet already exists, so don't fail if it does,
-# just load the existing wallet:
-# bitcoin-cli -datadir=/bitcoind createwallet regtest > /dev/null || bitcoin-cli -datadir=/bitcoind loadwallet regtest > /dev/null
-# bitcoin-cli -datadir=/bitcoind importprivkey $privkey > /dev/null || true
-# get address from wallet
-# export address=`bitcoin-cli -datadir=/bitcoind getnewaddress`
-# echo $address > /bitcoind/keys/demo_address.txt
-
 bitcoin-cli -datadir=/bitcoind createwallet regtest > /dev/null
 address=`bitcoin-cli -datadir=/bitcoind getnewaddress`
 echo "================================================"
@@ -40,6 +28,4 @@ echo "================================================"
 bitcoin-cli -datadir=/bitcoind generatetoaddress 101 $address
 echo "Balance:" `bitcoin-cli -datadir=/bitcoind getbalance`
 
-# Executing CMD
-# exec "$@"
 tail -f /bitcoind/regtest/debug.log
