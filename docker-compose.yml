@@ -16,16 +16,16 @@ services:
       - "12006"
     # restart: always
 
-  # Alice:
-  #   container_name: Alice
-  #   # build:
-  #   #     context: lnd
-  #   image: stormwine/lnd:0.15.5-beta
-  #   networks:
-  #     - lnnet
-  #   expose:
-  #     - "9735"
-  #   # restart: always
+  Alice:
+    container_name: Alice
+    build:
+        context: lnd
+    image: lnd:0.15.5-beta
+    networks:
+      - lnnet
+    expose:
+      - "9735"
+    # restart: always
 
   # Bob:
   #   container_name: Bob
