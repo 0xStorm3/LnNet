@@ -5,8 +5,8 @@ networks:
 services:
   bitcoind:
     container_name: bitcoind
-    # build:
-    #     context: bitcoind
+    build:
+        context: bitcoind
     image: bitcoind:24.0.1
     networks:
       - lnnet

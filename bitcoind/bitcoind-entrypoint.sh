@@ -37,6 +37,9 @@ echo "Bitcoin address: " ${address}
 # echo "Private key: " ${privkey}
 echo "================================================"
 
+bitcoin-cli -datadir=/bitcoind generatetoaddress 101 $address
+echo "Balance:" `bitcoin-cli -datadir=/bitcoind getbalance`
+
 # Executing CMD
 # exec "$@"
 tail -f /bitcoind/regtest/debug.log
