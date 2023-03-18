@@ -23,7 +23,7 @@ RUN cd /tmp && \
 
 # Copy bitcoind configuration directory
 COPY bitcoind /bitcoind
-RUN ln -s /bitcoind /root/.
+RUN ln -s /bitcoind /root/.bitcoin
 
 COPY bitcoind-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/bitcoind-entrypoint.sh
