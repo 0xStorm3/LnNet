@@ -28,17 +28,8 @@ RUN tar -xvf /tmp/lnd-linux-amd64-${LND_VER}.tar.gz -C / && \
 
 COPY lnd /lnd
 RUN ln -s /lnd /root/.lnd
-# COPY fund-lnd.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/fund-lnd.sh
-# COPY bashrc /root/.bashrc
 COPY lnd-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/lnd-entrypoint.sh
-# COPY logtail.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/logtail.sh
-# COPY wait-for-bitcoind.sh /usr/local/bin
-# RUN chmod +x /usr/local/bin/wait-for-bitcoind.sh
-# COPY cli /usr/local/bin
-# RUN chmod +x /usr/local/bin/cli
 
 # LND RPC
 EXPOSE 10009/tcp
@@ -47,6 +38,3 @@ EXPOSE 9735/tcp
 
 WORKDIR /lnd
 ENTRYPOINT ["/usr/local/bin/lnd-entrypoint.sh"]
-
-# Show logs from beginning and keep following
-# CMD ["/usr/local/bin/logtail.sh"]

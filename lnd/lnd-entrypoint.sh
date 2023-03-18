@@ -16,12 +16,10 @@ do
 	sleep 1
 done
 echo "Startup complete"
-# echo "Funding lnd wallet"
-# source /usr/local/bin/fund-lnd.sh
+
 address=$(lncli --lnddir=/lnd --network regtest newaddress np2wkh | jq .address)
 echo "================================================"
 echo "LND Wallet address: " ${address}
 echo "================================================"
 
-# exec "$@"
 tail -f /lnd/logs/bitcoin/regtest/lnd.log
