@@ -28,6 +28,7 @@ RUN tar -xvf /tmp/lnd-linux-amd64-${LND_VER}.tar.gz -C / && \
 
 COPY lnd /lnd
 RUN ln -s /lnd /root/.lnd
+
 COPY lnd-entrypoint.sh /usr/local/bin
 RUN chmod +x /usr/local/bin/lnd-entrypoint.sh
 
@@ -35,6 +36,8 @@ RUN chmod +x /usr/local/bin/lnd-entrypoint.sh
 EXPOSE 10009/tcp
 # LND P2P
 EXPOSE 9735/tcp
+# LND REST RPC
+EXPOSE 8080/tcp
 
 WORKDIR /lnd
 ENTRYPOINT ["/usr/local/bin/lnd-entrypoint.sh"]

@@ -1,12 +1,14 @@
 version: "3.3"
+
 networks:
   lnnet:
+
+volumes:
+  alice-data:
 
 services:
   bitcoind:
     container_name: bitcoind
-    # build:
-    #     context: bitcoind
     image: bitcoind:24.0.1
     networks:
       - lnnet
@@ -14,48 +16,42 @@ services:
       - "18443"
       - "12005"
       - "12006"
-    # restart: always
 
   Alice:
     container_name: Alice
-    # build:
-    #     context: lnd
     image: lnd:0.15.5-beta
     networks:
       - lnnet
     expose:
       - "9735"
-    # restart: always
+      - "8080"
+      - "10009"
+    volumes:
+      - alice-data:/lnbits:rw
+    environment:
+      - tlsextradomain=Alice
+      - suportlnbits=1
+
+  lnbits:
+    container_name: lnbits
+    image: lnbits:latest
+    networks:
+      - lnnet
+    ports:
+      - 5000:5000
+    volumes:
+      - alice-data:/lnd:ro
+    environment:
+      - LND_GRPC_ENDPOINT=Alice
 
   Bob:
     container_name: Bob
-    # build:
-    #   context: c-lightning
     image: lnd:0.15.5-beta
     networks:
       - lnnet
     expose:
       - "9735"
-    # restart: always
-
-  # Chan:
-  #   container_name: Chan
-  #   # build:
-  #   #     context: eclair
-  #   image: stormwine/eclair:0.8.0-0077471
-  #   networks:
-  #     - lnnet
-  #   expose:
-  #     - "9735"
-  #   # restart: always
-
-  # Dina:
-  #   container_name: Dina
-  #   # build:
-  #   #     context: lnd
-  #   image: stormwine/lnd:0.15.5-beta
-  #   networks:
-  #     - lnnet
-  #   expose:
-  #     - "9735"
-  #   # restart: always
+      - "10009"
+    environment:
+      - tlsextradomain=Bob
+      - suportlnbits=0
