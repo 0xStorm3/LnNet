@@ -1,19 +1,22 @@
 # ENV
-set BITCOIN_WALLET=bcrt1q09n4dh80gjsdjsr03kv8sxy0s298rz04m84wpc
-set ALICE_WALLET=2N2KQ2xaCDywHoL7NDxSHjdLwULND1gkYpV
-set BOB_WALLET=2MuD4wTf3ZyvXqoiQJag4yztDVQU8hmYXDu
-set ALICE_NODE_PK=0362fcb3c97bcee62bb729ff501741ec729df7e58bc4fc670192c8dcf31b8b8c1a
-set BOB_NODE_PK=023fc783f609c42436b544ef2751de59437f8c6c8cb0d4c964a4ba088d8724d59c
+set BITCOIN_WALLET=bcrt1qm5ufafmt7q2cgyqtfwlfp5k5hjyx64792x7afa
+set ALICE_WALLET=2N2FVqDQCGhbuf5YtyYduTwNAdgC92ogj5W
+set BOB_WALLET=2N5xFTKgXNJUFWv79eLsKQbvqVY112P7v38
+
+docker exec Alice lncli --lnddir=/lnd -n regtest getinfo
+docker exec Bob lncli --lnddir=/lnd -n regtest getinfo
+
+set ALICE_NODE_PK=0239675e3d8be23ca2e8ab2d2639bd2da8bb1836948c46883777a3a3ea88c2e4a4
+set BOB_NODE_PK=028508cec1f6a1c3e9565362b573e0be0aae14a69186482ed4c0cbcc3e4b0168de
 
 # Mine
-docker exec bitcoind bitcoin-cli -datadir=/bitcoind generatetoaddress 6 %BITCOIN_WALLET%
+docker exec bitcoind bitcoin-cli -datadir=/bitcoind generatetoaddress 6 bcrt1qm5ufafmt7q2cgyqtfwlfp5k5hjyx64792x7afa
 
 # Balance
 docker exec bitcoind bitcoin-cli -datadir=/bitcoind getbalance
 
 # Send
-docker exec bitcoind bitcoin-cli -datadir=/bitcoind sendtoaddress %ALICE_WALLET% 10
-docker exec bitcoind bitcoin-cli -datadir=/bitcoind sendtoaddress %BOB_WALLET% 10
+docker exec bitcoind bitcoin-cli -datadir=/bitcoind sendtoaddress 2N2FVqDQCGhbuf5YtyYduTwNAdgC92ogj5W 10
 
 # LND Balance
 docker exec Alice lncli --lnddir=/lnd -n regtest walletbalance

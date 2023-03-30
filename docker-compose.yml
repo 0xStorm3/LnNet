@@ -5,6 +5,7 @@ networks:
 
 volumes:
   alice-data:
+  bob-data:
 
 services:
   bitcoind:
@@ -32,13 +33,13 @@ services:
       - tlsextradomain=Alice
       - suportlnbits=1
 
-  lnbits:
-    container_name: lnbits
+  lnbits-Alice:
+    container_name: lnbits-Alice
     image: lnbits:latest
     networks:
       - lnnet
     ports:
-      - 5000:5000
+      - 5001:5000
     volumes:
       - alice-data:/lnd:ro
     environment:
@@ -52,6 +53,20 @@ services:
     expose:
       - "9735"
       - "10009"
+    volumes:
+      - bob-data:/lnbits:rw
     environment:
       - tlsextradomain=Bob
-      - suportlnbits=0
+      - suportlnbits=1
+
+  lnbits-Bob:
+    container_name: lnbits-Bob
+    image: lnbits:latest
+    networks:
+      - lnnet
+    ports:
+      - 5002:5000
+    volumes:
+      - bob-data:/lnd:ro
+    environment:
+      - LND_GRPC_ENDPOINT=Bob
