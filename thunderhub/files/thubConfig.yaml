@@ -1,0 +1,6 @@
+masterPassword: 'password'
+accounts:
+  - name: 'Alice'
+    serverUrl: 'Alice:10009'
+    macaroonPath: '/lnd/admin.macaroon'
+    certificatePath: '/lnd/tls.cert'

@@ -33,18 +33,6 @@ services:
       - tlsextradomain=Alice
       - suportlnbits=1
 
-  lnbits-Alice:
-    container_name: lnbits-Alice
-    image: lnbits:latest
-    networks:
-      - lnnet
-    ports:
-      - 5001:5000
-    volumes:
-      - alice-data:/lnd:ro
-    environment:
-      - LND_GRPC_ENDPOINT=Alice
-
   Bob:
     container_name: Bob
     image: lnd:0.15.5-beta
@@ -59,13 +47,23 @@ services:
       - tlsextradomain=Bob
       - suportlnbits=1
 
-  lnbits-Bob:
-    container_name: lnbits-Bob
+  ThunderHub:
+    container_name: ThunderHub
+    image: thunderhub:latest
+    networks:
+      - lnnet
+    ports:
+      - 3000:3000
+    volumes:
+      - alice-data:/lnd:ro
+
+  lnbits:
+    container_name: lnbits
     image: lnbits:latest
     networks:
       - lnnet
     ports:
-      - 5002:5000
+      - 5000:5000
     volumes:
       - bob-data:/lnd:ro
     environment:
